@@ -1,0 +1,16 @@
+/usr/bin/python2.7 /usr/bin/ipython kernel --pylab=inline --ipython-dir=/usr/local/adnxs/babraham-python/.ipython
+
+ps -ef | grep ipython | grep apache
+
+curl -H "Content-Type:application/json" http://greenhouse-dev.adnxs.net:16024/api/v1/scripts/runatrender
+
+curl -X POST -d 'username=babraham&password=Yawming1337&aaa=qweqweq&bbb=asdasd' http://greenhouse-dev.adnxs.net:16024/api/v1/scripts/runatrender
+
+
+python tornado_server.py &
+disown %1
+ps -ef | grep ipython
+kill pid
+
+crontab -e
+57 23 * * * source /home/babraham/.bash_profile; rm /home/babraham/projects/babraham-python/public/static/*tmp.csv; rm /home/babraham/projects/babraham-python/public/static/*tmp.html

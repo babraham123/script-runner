@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block header %}
+<div class="well">
+	<h1>List of available scripts</h1>
+	<h4>
+		Script Runner allows you to run small python scripts as if you 
+		were in an iPython notebook. With th eclick of a button run complicated
+		API calls or create beautiful graphs. To create a script of your own, 
+		check out this <a href="https://corpwiki.appnexus.com/display/adnexusclients/How+to+set+up+an+iPython+Notebook">wiki</a>.
+	</h4>
+</div>
+{% end %}
+
+
+{% block content %}
+<div class="container scriptbody">
+
+	{% for config in configs %}
+	<div class="row">
+		<a href="{{ config['link'] }}"><h2>{{ config['title'] }}</h2></a>
+		
+		<p>
+			{{ config['description'] }}
+			{% if config.has_key("wiki") %}
+			<a href="{{ config['wiki'] }}">. Wiki Link</a>
+			{% end %}
+		</p>
+
+	</div>
+	{% end %}
+</div>
+{% end %}
+
+{% block footer %}{% end %}
