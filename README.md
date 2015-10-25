@@ -1,20 +1,53 @@
-Basics
+# Script Runner
 
-Script Runner is a python web application that can run arbitrary python code. This code is pulled from ipython notebooks, and is rendered as astatic html page. The general idea was to recreate an ipython notebook server, that is read-only and allows a set number of input parameters. The code is written with Tornado, using their native templating and web serving capabilities. 
-
-Setup and Deployment
-
-The script has certain dependencies that make setup and deployment a little tricky.
-
-1. To run native python code, the app creates a new ipython KernelManager object. The object in turn spans a new child process and uses zmq messages to communicate with the new process. Because of this, the app cannot run on Apache child processes. Right now, I'm running the app out of my home directory using Tornado's with a set number of processes. I believe a proper deployment would be to run it under /root as a daemonized process.
-
-2. The rest of the issues are relatively easy to solve. I have hard coded a lot of relative paths, so within the project folder you cannot move any of the folders. For example, I use 'ipython nbconvert' to render the ipython notebooks as html pages. IPython depends on a configuration folder called ".ipython". 
-In addition, a lot of scripts use a convenient database connector library called Link. Link depends on a configuration file saved under ".link/link.confg".
-A lot of files go into "public/static/", which maps to "/static" on the public website.
-UI templates go in "templates/"
-All ipython notebooks go into "scripts/"
-
-3. The third issue is pandoc. Nbconbvert depends on pandoc to convert specific types of ipython notebooks, usually ones with charts and graphs. Pandoc is a document converter written in haskell, and can be installed with the cabal package manager. Remember to install pandoc to /root and to add the cabal bin to the PATH (further instructions﻿).
-
-4. Every time someone runs a script, the app generates a unique html file and a unique csv file (if the script has download options) in "public/static/". I have a daily cron job to delete all of the temporary files that accumulate by the end of the day.
+##### What it solves:
+- Today there are a bunch of ipython notebooks hidden away on people's dev boxes
+- While notebooks are pretty convenient when compared to the terminal, there is still a bit of a learning curve, especially for those with no programming background (most of the org!)
+- Wouldn't it be great if we could "appify" all of these scripts and notebooks to make them even simpler for everyone in the org to use? That's what Script runner does!
+ 
+##### What it does:
+- Takes your ipython notebook and a config (soon to be handled via self serve UI) and transforms the notebook into a shiny and easy to use web app
+- The UI is semi-customizable via the config parameters you provide
+- Pipes any notebook output into the web app. Dataframe tables are auto formatted to be filterable and downloadable!
+ 
+##### Current limitations:
+- No self serve config submission. For now, please send me your notebooks with the first cell housing the config (more on this below)
+- Doesn't support matplot's at the moment. I know it's possible, so this should be coming very soon.
+- Only the following data types for parameters that are supported: string, integer, boolean. List and dictionary support coming soon.
+ 
+### Instructions:
+ 
+##### How to run an app:
+- Simply follow the link above, select one of the notebooks and then fill out the required fields and hit submit.
+- For install instructions please refer to `setup.md`.
+ 
+##### How to submit a notebook to be appified:
+- First, ensure your notebooks runs without any errors!
+- Also note that any output your notebook generates will be shown to the end user. Clean up any unwanted outputs!
+- If you want to output a dataframe, use `print df.to_html(index=False)`
+- Remove the parameters from the notebook (these will be set by Script Runner when the user enters them)
+- Add the config cell (needs to be the first cell of the notebook)
+ 
+### Config structure:
+```json
+{
+    "nb_display_name": "Example Metric",
+    "nb_description": "Shows the example metric over time for the past month",
+    "nb_filename": "example.ipynb",
+    "params":[
+        {
+            "name":"user_id",
+            "display_name":"User ID",
+            "description":"",
+            "input_type":"integer"
+        },
+        {
+            "name":"username",
+            "display_name":"Username",
+            "description":"",
+            "input_type":"string"
+        }
+    ]
+}
+```
 

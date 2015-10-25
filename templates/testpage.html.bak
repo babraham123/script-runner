@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://jira.corp.appnexus.com/s/cecaa10bfd307317548b092b701894fe-T/en_USp8iya0/6329/17/1.4.13/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=0b5f4834"></script>
+
+
+  <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" charset="utf-8"></script>
+  <link href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet">
+  <script src="//cdn.datatables.net/tabletools/2.2.1/js/dataTables.tableTools.min.js" charset="utf-8"></script>
+  <link href="//cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css" rel="stylesheet">
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $('form').submit(function(event) {
+
+        event.preventDefault();
+
+        var form_data = $(this).serializeArray();
+
+        $.ajax({
+          type: 'POST',
+          url: window.location.pathname,
+          data: form_data,
+          beforeSend: function(){
+            $('#ajax-loader').show();
+          },
+          complete: function(){
+            $('#ajax-loader').hide();
+          },
+          success: function(response) {
+            $('#nb-output').html(response);
+            $('.dataframe').dataTable({
+              "dom": 'T<"clear">lfrtrip',
+              "tableTools": {
+                "sSwfPath": "//cdn.datatables.net/tabletools/2.2.1/swf/copy_csv_xls.swf",
+                "aButtons": ["csv", "xls", "copy"]
+              },
+              "scrollY": "440px",
+              "scrollX": true,
+              "paging": false
+            });
+          }
+        });
+      });
+    });
+
+  </script>
+
+
+
+  <style type="text/css">
+    .scroll {
+      max-height: 680px;
+      overflow-y: auto;
+    }
+    .code {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    }
+  </style>
+
+</head>
+
+<body>
+<div class="container">
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+        <li id="home" ><a href="/">Home</a>
+        </li>
+        <li id="notebooks" class="dropdown active" >
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notebooks <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+
+            <li><a href="/campaign-settings-exporter">Campaign Settings Exporter</a>
+            </li>
+
+            <li><a href="/domain-value">Domain Value</a>
+            </li>
+
+          </ul>
+        </li>
+        <li id="nb-submission" ><a href="/nb-submission">Submit a Notebook!</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Domain Value</h1>
+</div>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#runner" role="tab" data-toggle="tab">Runner</a>
+  </li>
+  <li><a href="#notebook" role="tab" data-toggle="tab">Notebook</a>
+  </li>
+</ul>
+<br>
+<div class="tab-content">
+  <div class="tab-pane active" id="runner">
+    <div class="row">
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <form id="client-form">
+
+        <div id="seller_member_id" class="form-group">
+          <p></p>
+
+          <label for="seller_member_id">Seller Member ID</label>
+          <input type="number" class="form-control" name="seller_member_id">
+        </div>
+
+        <button type="submit" class="btn btn-success" id="submit_button">Submit
+          <span class="fa fa-arrow-right"></span>
+        </button>
+        <span id="ajax-loader" style="display:none;"><img src="static/ajax-loader.gif"></span>
+      </form>
+    </div>
+  </div>
+  <div id="nb-output"></div>
+</div>
+
+<div class="tab-pane" id="notebook">
+<style type="text/css">
+  .highlight .hll { background-color: #ffffcc }
+  .highlight  { background: #f8f8f8; }
+  .highlight .c { color: #408080; font-style: italic } /* Comment */
+  .highlight .err { border: 1px solid #FF0000 } /* Error */
+  .highlight .k { color: #008000; font-weight: bold } /* Keyword */
+  .highlight .o { color: #666666 } /* Operator */
+  .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+  .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+  .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+  .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+  .highlight .gd { color: #A00000 } /* Generic.Deleted */
+  .highlight .ge { font-style: italic } /* Generic.Emph */
+  .highlight .gr { color: #FF0000 } /* Generic.Error */
+  .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+  .highlight .gi { color: #00A000 } /* Generic.Inserted */
+  .highlight .go { color: #808080 } /* Generic.Output */
+  .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+  .highlight .gs { font-weight: bold } /* Generic.Strong */
+  .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+  .highlight .gt { color: #0040D0 } /* Generic.Traceback */
+  .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+  .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+  .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+  .highlight .kp { color: #008000 } /* Keyword.Pseudo */
+  .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+  .highlight .kt { color: #B00040 } /* Keyword.Type */
+  .highlight .m { color: #666666 } /* Literal.Number */
+  .highlight .s { color: #BA2121 } /* Literal.String */
+  .highlight .na { color: #7D9029 } /* Name.Attribute */
+  .highlight .nb { color: #008000 } /* Name.Builtin */
+  .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+  .highlight .no { color: #880000 } /* Name.Constant */
+  .highlight .nd { color: #AA22FF } /* Name.Decorator */
+  .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+  .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+  .highlight .nf { color: #0000FF } /* Name.Function */
+  .highlight .nl { color: #A0A000 } /* Name.Label */
+  .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+  .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+  .highlight .nv { color: #19177C } /* Name.Variable */
+  .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+  .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+  .highlight .mf { color: #666666 } /* Literal.Number.Float */
+  .highlight .mh { color: #666666 } /* Literal.Number.Hex */
+  .highlight .mi { color: #666666 } /* Literal.Number.Integer */
+  .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+  .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+  .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+  .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+  .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+  .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+  .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+  .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+  .highlight .sx { color: #008000 } /* Literal.String.Other */
+  .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+  .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+  .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+  .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+  .highlight .vc { color: #19177C } /* Name.Variable.Class */
+  .highlight .vg { color: #19177C } /* Name.Variable.Global */
+  .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+  .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;nb_filename&#39;</span><span class="p">:</span> <span class="s">&#39;Domain Value.ipynb&#39;</span><span class="p">,</span>
+    <span class="s">&#39;nb_display_name&#39;</span><span class="p">:</span><span class="s">&#39;Domain Value&#39;</span><span class="p">,</span>
+    <span class="s">&#39;params&#39;</span><span class="p">:[</span>
+        <span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span><span class="s">&#39;seller_member_id&#39;</span><span class="p">,</span>
+        <span class="s">&#39;display_name&#39;</span><span class="p">:</span><span class="s">&#39;Seller Member ID&#39;</span><span class="p">,</span>
+        <span class="s">&#39;description&#39;</span><span class="p">:</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;input_type&#39;</span><span class="p">:</span><span class="s">&#39;integer&#39;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="kn">from</span> <span class="nn">link</span> <span class="kn">import</span> <span class="n">lnk</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">utility_functions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">fiba_managed</span> <span class="o">=</span> <span class="n">lnk</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">fiba_managed</span>
+<span class="n">vertica</span> <span class="o">=</span> <span class="n">lnk</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">vertica</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">sf_data</span><span class="o">=</span><span class="n">fiba_managed</span><span class="o">.</span><span class="n">select_dataframe</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">SELECT distinct m.member_id, m.member_name, s.client_sub_segment, s.account_region, account_market, account_zone, client_segment </span>
+<span class="s">FROM fiba.member m </span>
+<span class="s">JOIN fiba.account_segment s on (m.account_id = s.account_id and is_active=1 and s.date=CURDATE() - INTERVAL 1 DAY)</span>
+<span class="s">WHERE m.date=CURDATE() - INTERVAL 1 DAY</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">member_domains</span> <span class="o">=</span> <span class="n">vertica</span><span class="o">.</span><span class="n">select_dataframe</span><span class="p">(</span><span class="s">&quot;&quot;&quot;select seller_member_id, site_domain, sum(imps) imps from agg_dw_seller_site_domain </span>
+<span class="s">where imp_type not in (5,7) and ymd &gt; current_date-3</span>
+<span class="s">and seller_member_id in ({})</span>
+<span class="s">and audit_type in (2,3)</span>
+<span class="s">group by 1,2</span>
+<span class="s">having sum(imps) &gt; 5000&quot;&quot;&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seller_member_id</span><span class="p">))</span> 
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">domain_list</span> <span class="o">=</span> <span class="n">sql_list</span><span class="p">(</span><span class="n">member_domains</span><span class="o">.</span><span class="n">site_domain</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">platform_domains</span> <span class="o">=</span> <span class="n">vertica</span><span class="o">.</span><span class="n">select_dataframe</span><span class="p">(</span><span class="s">&quot;&quot;&quot;select seller_member_id, bidder_id,</span>
+<span class="s">site_domain, </span>
+<span class="s">RANK() OVER (PARTITION BY site_domain ORDER BY sum(imps_seen) DESC) as platform_rank, </span>
+<span class="s">sum(imps_seen) imps_seen</span>
+<span class="s">from agg_platform_inventory_availability</span>
+<span class="s">join sup_api_member on seller_member_id = id</span>
+<span class="s">and ymd &gt; current_date-3</span>
+<span class="s">and site_domain IN ({})</span>
+<span class="s">group by 1,2,3</span>
+<span class="s">having sum(imps_seen) &gt; 5000&quot;&quot;&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">domain_list</span><span class="p">))</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;is_external&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;bidder_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;imps_external&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;is_external&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;imps_seen&#39;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;imps_console&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;is_external&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">platform_domains</span><span class="p">[</span><span class="s">&#39;imps_seen&#39;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">platform_domains</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&#39;site_domain&#39;</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">agged_platform</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s">&#39;imps_seen&#39;</span><span class="p">:</span><span class="s">&#39;sum&#39;</span><span class="p">,</span><span class="s">&#39;imps_external&#39;</span><span class="p">:</span><span class="s">&#39;sum&#39;</span><span class="p">,</span><span class="s">&#39;imps_console&#39;</span><span class="p">:</span><span class="s">&#39;sum&#39;</span><span class="p">,</span> <span class="s">&#39;seller_member_id&#39;</span><span class="p">:</span><span class="s">&#39;count&#39;</span><span class="p">,</span> <span class="s">&#39;is_external&#39;</span><span class="p">:</span><span class="s">&#39;sum&#39;</span><span class="p">})</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">agged_platform</span> <span class="o">=</span> <span class="n">agged_platform</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;seller_member_id&#39;</span> <span class="p">:</span> <span class="s">&#39;console_resellers&#39;</span><span class="p">,</span> <span class="s">&#39;is_external&#39;</span> <span class="p">:</span> <span class="s">&#39;external_resellers&#39;</span><span class="p">})</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">final_domains</span> <span class="o">=</span> <span class="n">member_domains</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">agged_platform</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s">&#39;site_domain&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">final_domains</span> <span class="o">=</span> <span class="n">final_domains</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;imps&#39;</span><span class="p">:</span><span class="s">&#39;member_imps&#39;</span><span class="p">,</span> <span class="s">&#39;imps_seen&#39;</span> <span class="p">:</span> <span class="s">&#39;total_imps_seen&#39;</span><span class="p">})</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">final_domains</span> <span class="o">=</span> <span class="n">final_domains</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">platform_domains</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;seller_member_id&#39;</span><span class="p">,</span><span class="s">&#39;site_domain&#39;</span><span class="p">])</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">final_domains</span> <span class="o">=</span> <span class="n">final_domains</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">&#39;imps_seen&#39;</span><span class="p">,</span><span class="s">&#39;is_external&#39;</span><span class="p">,</span><span class="s">&#39;imps_external_y&#39;</span><span class="p">,</span><span class="s">&#39;imps_console_y&#39;</span><span class="p">,</span> <span class="s">&#39;bidder_id&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="n">final_domains</span> <span class="o">=</span> <span class="n">final_domains</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;imps_external_x&#39;</span> <span class="p">:</span> <span class="s">&#39;imps_external&#39;</span><span class="p">,</span>
+                                              <span class="s">&#39;imps_console_x&#39;</span> <span class="p">:</span> <span class="s">&#39;imps_console&#39;</span><span class="p">})</span>
+</pre></div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="highlight"><pre><span class="k">print</span> <span class="n">final_domains</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+</div>
+</div>
+
+</div>
+</body>
+</html>

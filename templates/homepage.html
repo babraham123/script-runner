@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% set active_page = "home" %}
+{% block css_content %}
+  <style>
+
+    .limit-width {
+      word-wrap: break-word;
+      max-width: 450px;
+    }
+    td th .valign {
+      vertical-align: middle !important;
+    }
+
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Script Runner
+      <small>Select a Notebook below!</small>
+    </h1>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th class="limit-width valign">App Name</th>
+      <th class="valign">Uploaded by</th>
+      <th class="valign">Uploaded on</th>
+      <th class="valign">Parameters</th>
+      <th class="valign">Filename</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for nb in notebooks%}
+      <tr>
+        <td class="limit-width">
+          <h3><a href="/{{nb.nb_endpoint}}" target="_blank">{{nb.nb_display_name}} </a></h3>
+          {{ nb.nb_description }}
+        </td>
+        <td class="valign"></td>
+        <td class="valign"></td>
+        <td class="valign">
+          <ul>
+            {% for param in nb.params %}
+              <li>{{ param.display_name }}</li>
+              </ul>
+            {% endfor %}
+        </td>
+        <td class="valign">{{ nb.nb_filename }}</td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

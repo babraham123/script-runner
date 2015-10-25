@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% set active_page = "notebooks" %}
+{% block imports %}
+  <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" charset="utf-8"></script>
+  <link href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet">
+  <script src="//cdn.datatables.net/tabletools/2.2.1/js/dataTables.tableTools.min.js" charset="utf-8"></script>
+  <link href="//cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css" rel="stylesheet">
+{% endblock %}
+
+{% block js_content %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      $('form').submit(function (event) {
+
+        event.preventDefault();
+
+        var form_data = $(this).serializeArray();
+
+        $.ajax({
+          type: 'POST',
+          url: window.location.pathname,
+          data: form_data,
+          beforeSend: function () {
+            $('#ajax-loader').show();
+          },
+          complete: function () {
+            $('#ajax-loader').hide();
+          },
+          success: function (response) {
+            $('#nb-output').html(response);
+            $('.dataframe').dataTable({
+              "dom": 'T<"clear">lfrtrip',
+              "tableTools": {
+                "sSwfPath": "//cdn.datatables.net/tabletools/2.2.1/swf/copy_csv_xls.swf",
+                "aButtons": ["csv", "xls", "copy"]
+              },
+              "scrollY": "440px",
+              "scrollX": true,
+              "paging": false
+            });
+          }
+        });
+      });
+    });
+
+  </script>
+{% endblock %}
+
+{% block css_content %}
+  <style type="text/css">
+    .scroll {
+      max-height: 680px;
+      overflow-y: auto;
+    }
+
+    .code {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>{{ results.nb_display_name }}</h1>
+  </div>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#runner" role="tab" data-toggle="tab">Runner</a>
+    </li>
+    <li><a href="#notebook" role="tab" data-toggle="tab">Notebook</a>
+    </li>
+  </ul>
+  <br>
+  <div class="tab-content">
+    <div class="tab-pane active" id="runner">
+      {% if results.nb_description %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-info" role="alert">{{ results.nb_description }}</div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-5">
+          <form id="client-form">
+            {% for param in results.params %}
+              <div id="{{ param.name }}" class="form-group">
+                <p>{{ param.description }}</p>
+                {% if param.input_type == 'textbox' %}
+                  <label for="{{ param.name }}">{{ param.display_name }}</label>
+                  <textarea name="{{ param.name }}" class="form-control" rows="3"></textarea>
+                {% elif param.input_type == 'boolean' %}
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="{{ param.name }}" id="optionsRadios1" value="True" checked>True
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="{{ param.name }}" id="optionsRadios2" value="False">False
+                    </label>
+                  </div>
+                {% elif param.input_type == 'integer' %}
+                  <label for="{{ param.name }}">{{ param.display_name }}</label>
+                  <input type="number" class="form-control" name="{{ param.name }}">{% else %}
+                  <label for="{{ param.name }}">{{ param.display_name }}</label>
+                  <input type="text" class="form-control" name="{{ param.name }}" pattern=".{1,}" required
+                         title="Minimum 1 characters">
+                {% endif %}
+              </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success" id="submit_button">Run!
+              <span class="fa fa-arrow-right"></span>
+            </button>
+            <span id="ajax-loader" style="display:none;"><img src="static/ajax-loader.gif"></span>
+          </form>
+        </div>
+      </div>
+      <div id="nb-output"></div>
+    </div>
+
+    <div class="tab-pane" id="notebook">
+      <style type="text/css">
+        {{ input_css }}
+      </style>
+      {% for cell in inputs %}
+        <div class="row">
+          <div class="col-md-12">
+            {{ cell | safe }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

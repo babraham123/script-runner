@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% set active_page = "nb-submission" %}
+{% block content %}
+        <div class="page-header">
+            <h1>Script Runner
+                <small>Notebook Submission</small>
+            </h1>
+        </div>
+        <form role="form" id="upload-script" action="/nb-submission" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Script Config</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="upload_file">File input</label>
+                                <input name="nb_file" type="file" id="nb_file" required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="script-display_name">Script Display Name</label>
+                                <input type="text" class="form-control" placeholder="Title to be displayed on the webpage" id="script-display_name" name="nb_display_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Script Description</label>
+                                <textarea name="nb_description" id="description" class="form-control" placeholder="What your script does, how to use it, etc." rows=3></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Parameter 1</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="param-name">Name</label>
+                                <input type="text" class="form-control" placeholder="As used in your script" name="param_name1">
+                            </div>
+                            <div class="form-group">
+                                <label for="param-display_name">Display Name</label>
+                                <input type="text" class="form-control" placeholder="What the user will see" name="param_display_name1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="param-description">Description</label>
+                                <textarea name="param_description1" class="form-control" placeholder="Optional explanation of what the parameter means" rows=2></textarea>
+                            </div>
+                            <label>Input Type</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type1" value="integer">Integer
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type1" value="string">String/Text
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type1" value="boolean">Boolean (True/False)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Parameter 2</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="param-name">Name</label>
+                                <input type="text" class="form-control" placeholder="As used in your script" name="param_name2">
+                            </div>
+                            <div class="form-group">
+                                <label for="param-display_name">Display Name</label>
+                                <input type="text" class="form-control" placeholder="What the user will see" name="param_display_name2">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="param-description">Description</label>
+                                <textarea name="param_description2" class="form-control" placeholder="Optional explanation of what the parameter means" rows=2></textarea>
+                            </div>
+                            <label>Input Type</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type2" value="integer">Integer
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type2" value="string">String/Text
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type2" value="boolean">Boolean (True/False)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Parameter 3</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="param-name">Name</label>
+                                <input type="text" class="form-control" placeholder="As used in your script" name="param_name3">
+                            </div>
+                            <div class="form-group">
+                                <label for="param-display_name">Display Name</label>
+                                <input type="text" class="form-control" placeholder="What the user will see" name="param_display_name3">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="param-description">Description</label>
+                                <textarea name="param_description3" class="form-control" placeholder="Optional explanation of what the parameter means" rows=2></textarea>
+                            </div>
+                            <label>Input Type</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type3" value="integer">Integer
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type3" value="string">String/Text
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type3" value="boolean">Boolean (True/False)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Parameter 4</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="param-name">Name</label>
+                                <input type="text" class="form-control" placeholder="As used in your script" name="param_name4">
+                            </div>
+                            <div class="form-group">
+                                <label for="param-display_name">Display Name</label>
+                                <input type="text" class="form-control" placeholder="What the user will see" name="param_display_name4">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="param-description">Description</label>
+                                <textarea name="param_description4" class="form-control" placeholder="Optional explanation of what the parameter means" rows=2></textarea>
+                            </div>
+                            <label>Input Type</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type4" value="integer">Integer
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type4" value="string">String/Text
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="param_input_type4" value="boolean">Boolean (True/False)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success" id="submit_button">Submit
+                <span class="fa fa-arrow-right"></span>
+            </button>
+        </form>
+{% endblock %}

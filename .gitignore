@@ -1,0 +1,10 @@
+bin
+build
+eggs
+dist
+*.pyc
+*.pyo
+*.log
+*.out
+*.tmp*
+
