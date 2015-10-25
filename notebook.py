@@ -23,7 +23,7 @@ def nb_config_list(nb_dir):
 
     config_list = []
     for nb_filename in os.listdir(nb_dir):
-        if '.ipynb' in nb_filename:
+        if '.ipynb' in nb_filename and 'ipynb_checkpoints' not in nb_filename:
             nb = NotebookObject(nb_dir + nb_filename)
             config_dict = nb.get_nb_config()
             if config_dict:

@@ -6,7 +6,7 @@ Run through these instructions and then try to load the example notebooks presen
 cd ~
 sudo apt-get install -y nginx gunicorn
 sudo easy_install pip
-sudo pip install "ipython[notebook]"
+sudo pip install "ipython==3.2.1"
 sudo pip install runipy
 sudo pip install Flask
 mkdir notebooks
