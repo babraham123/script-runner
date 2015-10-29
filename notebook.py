@@ -108,7 +108,11 @@ class NotebookObject(object):
         self.cells.insert(cell_position, insert_dict)
         self.nb_obj['worksheets'][0]['cells'] = self.cells
         self.nb_obj = reads(json.dumps(self.nb_obj), 'json')
-        self.cells_inputs = [cell['input'] for cell in self.cells]
+        # self.cells_inputs = [cell['input'] for cell in self.cells]
+        self.cells_inputs = []
+        for cell in self.cells:
+            if 'input' in cell:
+                self.cells_inputs.append(cell['input'])
 
     def insert_nb_params(self, params):
         """
