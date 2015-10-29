@@ -11,19 +11,19 @@ app = Flask(__name__)
 
 nb_dir = os.getcwd() + '/notebooks/'
 app.config['UPLOAD_FOLDER'] = nb_dir
+config_list = nb_config_list(nb_dir)
 
-
-@app.context_processor      # this decorator makes variables available to all jinja template
+@app.context_processor # this decorator makes variables available to all jinja template
 def nav_data():
-    config_list = nb_config_list(nb_dir)  # TODO: understand how to declare this as global variable to avoid repeated instansiations
+    global config_list
     nav_data = [{'nb_display_name': config['nb_display_name'],
-                 'nb_endpoint': config['nb_endpoint']} for config in config_list]
+        'nb_endpoint': config['nb_endpoint']} for config in config_list]
     return dict(nav_data=nav_data)
 
 
 @app.route('/', methods=['GET'])
 def homepage():
-    config_list = nb_config_list(nb_dir)
+    global config_list
     return render_template("homepage.html", notebooks=config_list)
 
 # Self service page for users to submit their own ipython notebooks. Converts form input to nb config which is
@@ -65,8 +65,7 @@ def nb_submission():
 @app.route('/<nb_endpoint>', methods=['GET', 'POST'])
 def render_ui(nb_endpoint):
     # validate that endpoint maps to known app endpoint
-    config_list = nb_config_list(nb_dir)
-
+    global config_list
     if nb_endpoint not in [config['nb_endpoint'] for config in config_list]:
         return "app not found"
     else:
