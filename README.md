@@ -1,4 +1,5 @@
 # Script Runner
+Authors: Chris Armstrong, Bereket Abraham
 
 ##### What it solves:
 - Today there are a bunch of ipython notebooks hidden away on people's dev boxes
